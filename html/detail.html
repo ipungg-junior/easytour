@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2510 Urban Living - Jakarta | EasyTour</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#0d6efd',
+                        secondary: '#6c757d',
+                        accent: '#ffc107',
+                        tiket: '#ff6b00',
+                        tiketLight: '#fff0e6'
+                    },
+                    fontFamily: {
+                        poppins: ['Poppins', 'sans-serif']
+                    },
+                    boxShadow: {
+                        'card': '0 4px 12px rgba(0,0,0,0.08)',
+                        'search': '0 6px 20px rgba(0,0,0,0.12)'
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+        * {
+            box-sizing: border-box;
+            /* CORRECTED: Changed from '0' to 'border-box' */
+        }
+
+        .gradient-bg {
+            background: linear-gradient(120deg, #0d6efd 0%, #004aad 100%);
+        }
+
+        .smooth-transition {
+            transition: all 0.3s ease;
+        }
+
+        .destination-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .destination-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .facility-icon {
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            background-color: #f8f9fa;
+        }
+
+        .leaflet-map-pane,
+        .leaflet-tile-container,
+        .leaflet-container {
+            z-index: auto !important;
+        }
+
+        .leaflet-control-attribution a[href*="leafletjs.com"] {
+            display: none !important;
+        }
+
+        /* Ensure header stays on top */
+        header {
+            z-index: 50 !important;
+            /* Changed from z-100 to z-50 */
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 font-poppins overflow-x-hidden">
+    <!-- Header -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-3 flex items-center justify-between">
+            <div class="flex items-center">
+                <h1 class="text-xl font-bold text-primary">EasyTour</h1>
+            </div>
+
+            <div class="flex items-center space-x-4">
+                <button class="p-2 rounded-full hover:bg-gray-100 smooth-transition">
+                    <i class="fas fa-bell text-gray-600"></i>
+                </button>
+                <button class="p-2 rounded-full hover:bg-gray-100 smooth-transition">
+                    <i class="fas fa-user text-gray-600"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+    <style>
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            /* IE and Edge */
+            scrollbar-width: none;
+            /* Firefox */
+        }
+
+        .hide-scrollbar::-webkit-scrollbar {
+            /* Chrome, Safari, Opera */
+            display: none;
+        }
+    </style>
+    <!-- Primary section -->
+    <div class="">
+        <!-- Main Image -->
+        <div class="relative rounded-md mb-2">
+            <img src="https://images.unsplash.com/photo-1448375240586-882707db888b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80"
+                alt="Hotel exterior" class="w-full h-auto object-cover">
+        </div>
+        <!-- Thumbnail Carousel -->
+        <div class="overflow-x-auto pb-2 hide-scrollbar">
+            <div class="flex space-x-2">
+                <!-- Thumbnail 1 -->
+                <div class="flex-shrink-0 rounded-md overflow-hidden cursor-pointer">
+                    <img src="https://images.unsplash.com/photo-1566665797739-1674de7a421a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80"
+                        alt="Hotel room" class="w-24 h-24 object-cover">
+                </div>
+                <!-- Thumbnail 2 -->
+                <div class="flex-shrink-0 rounded-md overflow-hidden cursor-pointer">
+                    <img src="https://images.unsplash.com/photo-1596394516093-501ba68a0ba6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80"
+                        alt="Bathroom" class="w-24 h-24 object-cover">
+                </div>
+                <!-- Thumbnail 3 -->
+                <div class="flex-shrink-0 rounded-md overflow-hidden cursor-pointer">
+                    <img src="https://images.unsplash.com/photo-1501785888041-af3ef285b470?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80"
+                        alt="Surrounding area" class="w-24 h-24 object-cover">
+                </div>
+                <!-- Thumbnail 4 -->
+                <div class="flex-shrink-0 rounded-md overflow-hidden cursor-pointer">
+                    <img src="https://images.unsplash.com/photo-1476820865390-c52aeebb9891?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80"
+                        alt="Pool area" class="w-24 h-24 object-cover">
+                </div>
+                <!-- Thumbnail 5 -->
+                <div class="flex-shrink-0 rounded-md overflow-hidden cursor-pointer">
+                    <img src="https://images.unsplash.com/photo-1561501900-3701fa6a0864?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80"
+                        alt="Dining area" class="w-24 h-24 object-cover">
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-6">
+        <div class="flex flex-col lg:flex-row gap-8 lg:gap-12"> <!-- Increased gap for desktop -->
+            <!-- Left Column: Images & Details -->
+            <div class="lg:w-2/3 max-w-2xl"> <!-- Added max-width -->
+                <!-- Hotel Details -->
+                <div class="p-2">
+                    <div class="flex flex-col md:flex-row md:items-center justify-between mb-4">
+                        <div>
+                            <h1 class="text-2xl font-bold">2510 Urban Living</h1>
+                            <div class="flex items-center mt-1">
+                                <i class="fas fa-star text-sm text-yellow-400"></i>
+                                <i class="fas fa-star text-sm text-yellow-400"></i>
+                                <i class="fas fa-star text-sm text-yellow-400"></i>
+                                <i class="fas fa-star text-sm text-yellow-400"></i>
+                                <i class="fas fa-star text-sm text-gray-300"></i>
+                                <span class="ml-2 text-sm text-gray-600">4.0 (25 reviews)</span>
+                            </div>
+                        </div>
+                        <div class="mt-4 md:mt-0">
+                            <div class="text-xl font-bold text-tiket">Rp 750,000</div>
+                            <div class="text-xs text-gray-600">per night</div>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center text-gray-600 mb-4 text-sm">
+                        <i class="fas fa-map-marker-alt text-tiket mr-2"></i>
+                        <span>Mampang Prapatan, South Jakarta</span>
+                    </div>
+
+                    <p class="text-gray-700 mb-6 text-sm">
+                        Strategically located in Mampang Prapatan, 2510 Urban Living offers a contemporarily-designed accommodation within a 10-minute drive from Lippo Mall Kemang. You can request for
+                        laundry service with an additional charge. Public parking areas can be used for free by guests who drive. Complimentary WiFi is accessible in the hotel rooms.
+                    </p>
+
+                </div>
+
+                <!-- Facilities Section -->
+                <div class="bg-white rounded-2xl shadow-card p-6 py-8 lg:py-10 mb-8"> <!-- Increased vertical padding on larger screens -->
+                    <h2 class="text-xl font-bold mb-4">Popular Facilities</h2>
+                    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-6 gap-4"> <!-- Added lg:grid-cols-6 -->
+                        <div class="flex flex-col items-center">
+                            <div class="facility-icon mb-2">
+                                <i class="fas fa-wifi text-tiket"></i>
+                            </div>
+                            <span class="text-xs">WiFi</span>
+                        </div>
+                        <div class="flex flex-col items-center">
+                            <div class="facility-icon mb-2">
+                                <i class="fas fa-snowflake text-tiket"></i>
+                            </div>
+                            <span class="text-xs">AC</span>
+                        </div>
+                        <div class="flex flex-col items-center">
+                            <div class="facility-icon mb-2">
+                                <i class="fas fa-couch text-tiket"></i>
+                            </div>
+                            <span class="text-xs">Living Room</span>
+                        </div>
+                        <div class="flex flex-col items-center">
+                            <div class="facility-icon mb-2">
+                                <i class="fas fa-car text-tiket"></i>
+                            </div>
+                            <span class="text-xs">Free Parking</span>
+                        </div>
+                        <div class="flex flex-col items-center">
+                            <div class="facility-icon mb-2">
+                                <i class="fas fa-utensils text-tiket"></i>
+                            </div>
+                            <span class="text-xs">Restaurant</span>
+                        </div>
+                        <div class="flex flex-col items-center"> <!-- Added 6th facility for lg:grid-cols-6 -->
+                            <div class="facility-icon mb-2">
+                                <i class="fas fa-swimming-pool text-tiket"></i>
+                            </div>
+                            <span class="text-xs">Pool</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Location Section -->
+                <div class="bg-white rounded-2xl shadow-card p-6 py-8 lg:py-10 mb-8"> <!-- Increased vertical padding on larger screens -->
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-xl font-bold">Location</h2>
+                        <a href="#" class="text-tiket font-medium text-sm">See maps</a>
+                    </div>
+
+                    <!-- Map Container -->
+                    <div id="map" class="w-full h-64 rounded-xl mb-6 relative overflow-hidden">
+                        <div class="bg-gray-200 border-2 border-dashed w-full h-full flex items-center justify-center">
+                            <div class="text-center">
+                                <i class="fas fa-map-marker-alt text-tiket text-3xl mb-2"></i>
+                                <p class="text-gray-600">Location</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h2 class="text-xl font-bold mb-4">Nearby</h2>
+
+                    <!-- Category: Restaurant -->
+                    <div class="flex mb-2">
+                        <i class="text-red-500 fas fa-spoon text-md mt-1"></i>
+                        <div class="ml-2">
+                            <h4 class="text-sm">Restaurant</h4>
+                            <span class="text-xs text-gray-500">RM. Padang</span>
+                        </div>
+                    </div>
+                    <!-- Category: Shopping -->
+                    <div class="flex mb-2">
+                        <i class="text-yellow-500 fas fa-shop text-md mt-1"></i>
+                        <div class="ml-2">
+                            <h4 class="text-sm">Shopping</h4>
+                            <span class="text-xs text-gray-500">Grand Park Mall</span>
+                        </div>
+                    </div>
+                    <!-- Category: Entertaint -->
+                    <div class="flex mb-2">
+                        <i class="text-green-500 fas fa-tv-alt text-md mt-1"></i>
+                        <div class="ml-2">
+                            <h4 class="text-sm">Entertaint</h4>
+                            <span class="text-xs text-gray-500">Alun-alun kota</span>
+                        </div>
+                    </div>
+                    <!-- Category: Hospitals -->
+                    <div class="flex mb-2">
+                        <i class="text-cyan-500 fas fa-hospital text-md mt-1"></i>
+                        <div class="ml-2">
+                            <h4 class="text-sm">Hospitals</h4>
+                            <span class="text-xs text-gray-500">RS Mitra siaga</span>
+                        </div>
+                    </div>
+
+                    <!-- Category: Transportation -->
+                    <div class="flex mb-2">
+                        <i class="fas fa-bus text-md mt-1"></i>
+                        <div class="ml-2">
+                            <h4 class="text-sm">Transportation</h4>
+                            <span class="text-xs text-gray-500">Stasiun Kota</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Accommodation Policy Section -->
+                <div class="bg-white rounded-2xl shadow-card p-6 py-8 lg:py-10 mb-8"> <!-- Increased vertical padding on larger screens -->
+                    <h2 class="text-xl font-bold mb-4">Accommodation Rules</h2>
+
+                    <div class="space-y-4">
+                        <div class="flex items-start">
+                            <i class="fas fa-check-circle text-green-500 mt-1 mr-3"></i>
+                            <div>
+                                <div class="font-semibold">Procedure</div>
+                                <div class="flex gap-8">
+                                    <div>
+                                        <div class="text-sm text-gray-600">Check in</div>
+                                        <div class="font-bold text-gray-600">14:00</div>
+                                    </div>
+                                    <div>
+                                        <div class="text-sm text-gray-600">Check out</div>
+                                        <div class="font-bold text-gray-600">11:00</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start">
+                            <i class="fas fa-check-circle text-green-500 mt-1 mr-3"></i>
+                            <div>
+                                <div class="font-semibold">Deposit</div>
+                                <div class="text-sm text-gray-600">A deposit of Rp. 100,000 cash will be returned if the room key returns and does not smell of cigarette smoke</div>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start">
+                            <i class="fas fa-check-circle text-green-500 mt-1 mr-3"></i>
+                            <div>
+                                <div class="font-semibold">Guest Policy</div>
+                                <div class="text-sm text-gray-600">Guests of all ages are welcome to stay. Children ages 5 years old and above will be considered as adults.</div>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start">
+                            <i class="fas fa-check-circle text-green-500 mt-1 mr-3"></i>
+                            <div>
+                                <div class="font-semibold">Smoking Policy</div>
+                                <div class="text-sm text-gray-600">No smoking room</div>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start">
+                            <i class="fas fa-check-circle text-green-500 mt-1 mr-3"></i>
+                            <div>
+                                <div class="font-semibold">Pet Policy</div>
+                                <div class="text-sm text-gray-600">No pets allowed</div>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start">
+                            <i class="fas fa-check-circle text-green-500 mt-1 mr-3"></i>
+                            <div>
+                                <div class="font-semibold">Alcohol Policy</div>
+                                <div class="text-sm text-gray-600">No alcohol drinks allowed</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 pt-4 border-t border-gray-200">
+                        <h3 class="font-semibold mb-2">Important Information</h3>
+                        <ul class="text-sm text-gray-600 space-y-1">
+                            <li class="flex items-start">
+                                <span class="mr-2">•</span>
+                                <span>Please check and make sure that you haven't left any belongings behind when checking out</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="mr-2">•</span>
+                                <span>Want to check in early? Fill out the Special Requests form on the booking page</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Leaflet JS -->
+                <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+                <script>
+                    // Initialize the map
+                    const map = L.map('map', {
+                        zoomControl: false // This removes the default zoom control buttons
+                    }).setView([-6.2346, 106.8185], 15); // Coordinates for 2510 Urban Living
+
+                    // Add OpenStreetMap tiles
+                    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {}).addTo(map);
+
+                    // Add a marker for the hotel
+                    const hotelMarker = L.marker([-6.2346, 106.8185]).addTo(map);
+                    hotelMarker.bindPopup('2510 Urban Living').openPopup();
+                </script>
+
+            </div>
+
+            <!-- Right Column: Booking Form -->
+            <div class="lg:w-1/3 max-w-md"> <!-- Added max-width -->
+                <div class="bg-white rounded-2xl shadow-card p-6 lg:sticky lg:top-24"> <!-- Sticky only on lg+ -->
+                    <div class="text-center mb-6">
+                        <div class="text-xl font-bold text-tiket">Rp 750,000</div>
+                        <div class="text-sm text-gray-600">per night</div>
+                    </div>
+
+                    <div class="space-y-4 mb-6">
+                        <div>
+                            <label class="block text-sm font-medium mb-1">Check-in</label>
+                            <div class="flex items-center bg-gray-50 rounded-xl px-4 py-3 text-sm">
+                                <i class="far fa-calendar-alt text-gray-400 mr-3"></i>
+                                <input type="date" class="w-full bg-transparent focus:outline-none">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium mb-1">Check-out</label>
+                            <div class="flex items-center bg-gray-50 rounded-xl px-4 py-3 text-sm">
+                                <i class="far fa-calendar-alt text-gray-400 mr-3"></i>
+                                <input type="date" class="w-full bg-transparent focus:outline-none">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium mb-1">Rooms & Guests</label>
+                            <div class="flex items-center bg-gray-50 rounded-xl px-4 py-3 text-sm">
+                                <i class="fas fa-user-friends text-gray-400 mr-3"></i>
+                                <span>1 Room, 1 Guest</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-6 p-4 bg-blue-50 rounded-xl">
+                        <div class="flex justify-between mb-2">
+                            <span>Room price (1 night)</span>
+                            <span>Rp 750,000</span>
+                        </div>
+                        <div class="flex justify-between mb-2">
+                            <span>Taxes & Fees</span>
+                            <span>+ Rp 75,000</span>
+                        </div>
+                        <div class="border-t border-gray-200 pt-2 mt-2 flex justify-between font-bold">
+                            <span>Total</span>
+                            <span class="text-tiket">Rp 825,000</span>
+                        </div>
+                    </div>
+
+                    <button class="w-full bg-tiket text-white font-semibold py-4 rounded-xl hover:bg-orange-600 transition mb-4">
+                        Book Now
+                    </button>
+
+                    <div class="text-center text-sm text-gray-600">
+                        <i class="fas fa-lock mr-1"></i> Secure booking
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer Navigation -->
+    <nav class="bg-white border-t mt-8">
+        <div class="container mx-auto">
+            <div class="flex justify-around py-3">
+                <a href="#" class="flex flex-col items-center text-tiket">
+                    <i class="fas fa-home text-xl"></i>
+                    <span class="text-xs mt-1">Home</span>
+                </a>
+                <a href="#" class="flex flex-col items-center text-gray-500">
+                    <i class="fas fa-search text-xl"></i>
+                    <span class="text-xs mt-1">Explore</span>
+                </a>
+                <a href="#" class="flex flex-col items-center text-gray-500">
+                    <i class="fas fa-ticket-alt text-xl"></i>
+                    <span class="text-xs mt-1">My Trips</span>
+                </a>
+                <a href="#" class="flex flex-col items-center text-gray-500">
+                    <i class="fas fa-heart text-xl"></i>
+                    <span class="text-xs mt-1">Wishlist</span>
+                </a>
+                <a href="#" class="flex flex-col items-center text-gray-500">
+                    <i class="fas fa-ellipsis-h text-xl"></i>
+                    <span class="text-xs mt-1">More</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+</body>
+
+</html>

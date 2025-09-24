@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EasyTour - Book Flights, Hotels & More</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#0d6efd',
+                        secondary: '#6c757d',
+                        accent: '#ffc107',
+                        tiket: '#ff6b00',
+                        tiketLight: '#fff0e6'
+                    },
+                    fontFamily: {
+                        poppins: ['Poppins', 'sans-serif']
+                    },
+                    boxShadow: {
+                        'card': '0 4px 12px rgba(0,0,0,0.08)',
+                        'search': '0 6px 20px rgba(0,0,0,0.12)'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .gradient-bg {
+            background: linear-gradient(120deg, #0d6efd 0%, #004aad 100%);
+        }
+
+        .smooth-transition {
+            transition: all 0.3s ease;
+        }
+
+        .active-tab {
+            border-bottom: 3px solid #0d6efd;
+            color: #0d6efd;
+            font-weight: 600;
+        }
+
+        .search-card {
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .destination-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .destination-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .deal-badge {
+            background: linear-gradient(90deg, #ff6b00, #ff8c42);
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 font-poppins">
+    <!-- Header -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-3 flex items-center justify-between">
+            <div class="flex items-center">
+                <h1 class="text-2xl font-bold text-tiket">EasyTour</h1>
+            </div>
+
+            <div class="flex items-center space-x-4">
+                <button class="p-2 rounded-full hover:bg-gray-100 smooth-transition">
+                    <i class="fas fa-bell text-gray-600"></i>
+                </button>
+                <button class="p-2 rounded-full hover:bg-gray-100 smooth-transition">
+                    <i class="fas fa-user text-gray-600"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="gradient-bg text-white pb-10">
+        <div class="container mx-auto px-4 pt-6">
+            <h2 class="text-2xl md:text-3xl font-bold mb-2">Hey there, going anywhere?</h2>
+            <p class="text-blue-100 mb-6">One app for your holiday needs</p>
+
+            <!-- Search Card -->
+            <div class="search-card bg-white rounded-2xl p-5 -mb-8 relative z-10">
+                <!-- Tabs -->
+                <div class="flex border-b mb-5">
+                    <button id="train-tab" class="py-3 px-4 active-tab">Train</button>
+                    <button id="hotel-tab" class="py-3 px-4 text-gray-500 smooth-transition hover:text-primary">Hotel</button>
+                </div>
+
+                <!-- Train Search Form -->
+                <div id="train-form" class="space-y-5">
+                    <div class="flex flex-col md:flex-row md:items-center gap-3">
+                        <div class="flex-1">
+                            <label class="text-xs text-gray-500 ml-2">Departure</label>
+                            <div class="flex items-center bg-gray-50 rounded-xl px-4 py-3">
+                                <i class="fas fa-train text-gray-400 mr-3"></i>
+                                <input type="text" class="w-full bg-transparent focus:outline-none" placeholder="Jakarta">
+                            </div>
+                        </div>
+
+                        <button class="p-3 bg-gray-100 rounded-full self-center smooth-transition hover:bg-gray-200">
+                            <i class="fas fa-exchange-alt text-gray-600"></i>
+                        </button>
+
+                        <div class="flex-1">
+                            <label class="text-xs text-gray-500 ml-2">Destination</label>
+                            <div class="flex items-center bg-gray-50 rounded-xl px-4 py-3">
+                                <i class="fas fa-map-marker-alt text-gray-400 mr-3"></i>
+                                <input type="text" class="w-full bg-transparent focus:outline-none" placeholder="Bandung">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="text-xs text-gray-500 ml-2">Date</label>
+                            <div class="flex items-center bg-gray-50 rounded-xl px-4 py-3">
+                                <i class="far fa-calendar-alt text-gray-400 mr-3"></i>
+                                <input type="text" class="w-full bg-transparent focus:outline-none" value="Wed, 25 Dec" readonly>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="text-xs text-gray-500 ml-2">Passengers</label>
+                            <div class="flex items-center bg-gray-50 rounded-xl px-4 py-3">
+                                <i class="fas fa-user-friends text-gray-400 mr-3"></i>
+                                <span>1 Passenger</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="bg-tiket text-white px-8 py-4 rounded-xl font-semibold hover:bg-orange-600 smooth-transition w-full shadow-lg">
+                        Search Trains
+                    </button>
+                </div>
+
+                <!-- Hotel Search Form (Hidden by default) -->
+                <div id="hotel-form" class="space-y-5 hidden">
+                    <div>
+                        <label class="text-xs text-gray-500 ml-2">City or Property Name</label>
+                        <div class="flex items-center bg-gray-50 rounded-xl px-4 py-3">
+                            <i class="fas fa-hotel text-gray-400 mr-3"></i>
+                            <input type="text" class="w-full bg-transparent focus:outline-none" placeholder="Where do you want to stay?">
+                        </div>
+                    </div>
+
+                    <button class="bg-tiket text-white px-8 py-4 rounded-xl font-semibold hover:bg-orange-600 smooth-transition w-full shadow-lg">
+                        Search Hotels
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const trainTab = document.getElementById('train-tab');
+            const hotelTab = document.getElementById('hotel-tab');
+            const trainForm = document.getElementById('train-form');
+            const hotelForm = document.getElementById('hotel-form');
+
+            // Function to switch tabs
+            function switchTab(activeTab, inactiveTab, showForm, hideForm) {
+                // Update tab styles
+                activeTab.classList.add('active-tab');
+                activeTab.classList.remove('text-gray-500');
+                inactiveTab.classList.remove('active-tab');
+                inactiveTab.classList.add('text-gray-500');
+
+                // Show/hide forms
+                showForm.classList.remove('hidden');
+                hideForm.classList.add('hidden');
+            }
+
+            // Event listeners for tabs
+            trainTab.addEventListener('click', function () {
+                switchTab(trainTab, hotelTab, trainForm, hotelForm);
+            });
+
+            hotelTab.addEventListener('click', function () {
+                switchTab(hotelTab, trainTab, hotelForm, trainForm);
+            });
+        });
+    </script>
+
+    <!-- Deals Section -->
+    <section class="py-4 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center mb-5">
+                <h3 class="text-lg font-semibold">Special Deals</h3>
+                <a href="#" class="text-tiket text-sm font-medium">See All</a>
+            </div>
+
+            <div class="space-y-5">
+                <!-- Deal Card 1 -->
+                <div class="rounded-2xl overflow-hidden shadow-card destination-card">
+                    <div class="relative h-48">
+                        <!-- Background Image -->
+                        <div class="absolute inset-0 bg-cover bg-center"
+                            style="background-image: url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=200&q=80');"></div>
+
+                        <!-- Overlay -->
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+
+                        <!-- Content -->
+                        <div class="relative z-10 p-4 h-full flex flex-col justify-between">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <h4 class="text-white font-semibold text-lg">Bali Getaway Package</h4>
+                                    <p class="text-white/90 text-sm mt-1">5D4N • Hotel + Flight</p>
+                                </div>
+                                <span class="deal-badge text-white text-xs px-2 py-1 rounded-full">Hot Deal</span>
+                            </div>
+
+                            <div class="flex justify-between items-end">
+                                <div>
+                                    <div class="text-white/80 text-xs">Start from</div>
+                                    <div class="flex items-center">
+                                        <span class="text-white font-bold text-xl">Rp 2.500.000</span>
+                                        <span class="text-white/70 text-sm line-through ml-2">Rp 3.200.000</span>
+                                    </div>
+                                </div>
+                                <button class="bg-tiket text-white text-sm font-medium px-4 py-2 rounded-lg hover:bg-orange-600 transition">
+                                    Book Now
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Deal Card 2 -->
+                <div class="rounded-2xl overflow-hidden shadow-card destination-card">
+                    <div class="relative h-48">
+                        <!-- Background Image -->
+                        <div class="absolute inset-0 bg-cover bg-center"
+                            style="background-image: url('https://images.unsplash.com/photo-1512453437448-7994721878e4?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=200&q=80');"></div>
+
+                        <!-- Overlay -->
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+
+                        <!-- Content -->
+                        <div class="relative z-10 p-4 h-full flex flex-col justify-between">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <h4 class="text-white font-semibold text-lg">Jakarta Hotel Discount</h4>
+                                    <p class="text-white/90 text-sm mt-1">Luxury 5-star hotels</p>
+                                </div>
+                                <span class="deal-badge text-white text-xs px-2 py-1 rounded-full">Limited</span>
+                            </div>
+
+                            <div class="flex justify-between items-end">
+                                <div>
+                                    <div class="text-white/80 text-xs">Discount up to</div>
+                                    <div class="text-white font-bold text-xl">40% OFF</div>
+                                </div>
+                                <button class="bg-tiket text-white text-sm font-medium px-4 py-2 rounded-lg hover:bg-orange-600 transition">
+                                    Book Now
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Popular Destinations Carousel -->
+    <section class="py-8 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center mb-5">
+                <h3 class="text-lg font-semibold">Popular Destinations</h3>
+                <a href="#" class="text-tiket text-sm font-medium">See All</a>
+            </div>
+
+            <!-- Carousel Container -->
+            <div class="relative">
+                <div class="overflow-x-auto pb-4 hide-scrollbar">
+                    <div class="flex space-x-4" style="min-width: max-content;">
+                        <!-- Row 1 -->
+                        <div class="flex flex-col space-y-4">
+                            <!-- Card 1 -->
+                            <div class="relative rounded-2xl overflow-hidden destination-card w-64 h-40">
+                                <div class="absolute inset-0 bg-cover bg-center"
+                                    style="background-image: url('https://images.unsplash.com/photo-1448375240586-882707db888b?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=300&q=80');"></div>
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+                                <div class="relative z-10 p-3 h-full flex flex-col justify-end">
+                                    <h4 class="text-white font-semibold">Bali</h4>
+                                    <p class="text-white/90 text-xs">Starting from Rp 500K</p>
+                                </div>
+                            </div>
+
+                            <!-- Card 2 -->
+                            <div class="relative rounded-2xl overflow-hidden destination-card w-64 h-40">
+                                <div class="absolute inset-0 bg-cover bg-center"
+                                    style="background-image: url('https://images.unsplash.com/photo-1473448912268-2022ce9509d8?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=300&q=80');"></div>
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+                                <div class="relative z-10 p-3 h-full flex flex-col justify-end">
+                                    <h4 class="text-white font-semibold">Yogyakarta</h4>
+                                    <p class="text-white/90 text-xs">Starting from Rp 300K</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Row 2 -->
+                        <div class="flex flex-col space-y-4">
+                            <!-- Card 3 -->
+                            <div class="relative rounded-2xl overflow-hidden destination-card w-64 h-40">
+                                <div class="absolute inset-0 bg-cover bg-center"
+                                    style="background-image: url('https://images.unsplash.com/photo-1476820865390-c52aeebb9891?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=300&q=80');"></div>
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+                                <div class="relative z-10 p-3 h-full flex flex-col justify-end">
+                                    <h4 class="text-white font-semibold">Bandung</h4>
+                                    <p class="text-white/90 text-xs">Starting from Rp 250K</p>
+                                </div>
+                            </div>
+
+                            <!-- Card 4 -->
+                            <div class="relative rounded-2xl overflow-hidden destination-card w-64 h-40">
+                                <div class="absolute inset-0 bg-cover bg-center"
+                                    style="background-image: url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=300&q=80');"></div>
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+                                <div class="relative z-10 p-3 h-full flex flex-col justify-end">
+                                    <h4 class="text-white font-semibold">Medan</h4>
+                                    <p class="text-white/90 text-xs">Starting from Rp 400K</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Row 3 -->
+                        <div class="flex flex-col space-y-4">
+                            <!-- Card 5 -->
+                            <div class="relative rounded-2xl overflow-hidden destination-card w-64 h-40">
+                                <div class="absolute inset-0 bg-cover bg-center"
+                                    style="background-image: url('https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=300&q=80');"></div>
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+                                <div class="relative z-10 p-3 h-full flex flex-col justify-end">
+                                    <h4 class="text-white font-semibold">Lombok</h4>
+                                    <p class="text-white/90 text-xs">Starting from Rp 450K</p>
+                                </div>
+                            </div>
+
+                            <!-- Card 6 -->
+                            <div class="relative rounded-2xl overflow-hidden destination-card w-64 h-40">
+                                <div class="absolute inset-0 bg-cover bg-center"
+                                    style="background-image: url('https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=300&q=80');"></div>
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+                                <div class="relative z-10 p-3 h-full flex flex-col justify-end">
+                                    <h4 class="text-white font-semibold">Surabaya</h4>
+                                    <p class="text-white/90 text-xs">Starting from Rp 350K</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <style>
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+    </style>
+
+    <!-- Information Section -->
+    <section class="py-12 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-4">Why Choose EasyTour?</h2>
+            <p class="text-gray-600 text-center max-w-2xl mx-auto mb-12">
+                We make travel planning simple and enjoyable with our comprehensive platform
+            </p>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Feature 1 -->
+                <div class="flex flex-col items-center text-center p-6 bg-white rounded-2xl shadow-card">
+                    <div class="mb-4">
+                        <img src="https://images.unsplash.com/photo-1551632811-561732d1e353?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&h=200&q=80" alt="Best Price"
+                            class="w-24 h-24 rounded-full object-cover">
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Best Price Guarantee</h3>
+                    <p class="text-gray-600">
+                        Find the best deals on flights, hotels, and packages with our price matching promise
+                    </p>
+                </div>
+
+                <!-- Feature 2 -->
+                <div class="flex flex-col items-center text-center p-6 bg-white rounded-2xl shadow-card">
+                    <div class="mb-4">
+                        <img src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&h=200&q=80" alt="Customer Support"
+                            class="w-24 h-24 rounded-full object-cover">
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">24/7 Customer Support</h3>
+                    <p class="text-gray-600">
+                        Our dedicated support team is always ready to assist you with any travel needs
+                    </p>
+                </div>
+
+                <!-- Feature 3 -->
+                <div class="flex flex-col items-center text-center p-6 bg-white rounded-2xl shadow-card">
+                    <div class="mb-4">
+                        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&h=200&q=80" alt="Easy Booking"
+                            class="w-24 h-24 rounded-full object-cover">
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Easy Booking Process</h3>
+                    <p class="text-gray-600">
+                        Book your entire trip in minutes with our user-friendly platform and mobile app
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Navigation -->
+    <nav class="bg-white border-t fixed bottom-0 w-full md:relative md:mt-8">
+        <div class="container mx-auto">
+            <div class="flex justify-around py-3">
+                <a href="#" class="flex flex-col items-center text-tiket">
+                    <i class="fas fa-home text-xl"></i>
+                    <span class="text-xs mt-1">Home</span>
+                </a>
+                <a href="#" class="flex flex-col items-center text-gray-500">
+                    <i class="fas fa-search text-xl"></i>
+                    <span class="text-xs mt-1">Explore</span>
+                </a>
+                <a href="#" class="flex flex-col items-center text-gray-500">
+                    <i class="fas fa-ticket-alt text-xl"></i>
+                    <span class="text-xs mt-1">My Trips</span>
+                </a>
+                <a href="#" class="flex flex-col items-center text-gray-500">
+                    <i class="fas fa-heart text-xl"></i>
+                    <span class="text-xs mt-1">Wishlist</span>
+                </a>
+                <a href="#" class="flex flex-col items-center text-gray-500">
+                    <i class="fas fa-ellipsis-h text-xl"></i>
+                    <span class="text-xs mt-1">More</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Spacer for fixed footer on mobile -->
+    <div class="md:hidden pb-16"></div>
+</body>
+
+</html>
