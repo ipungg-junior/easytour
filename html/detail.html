@@ -232,6 +232,68 @@
                     </div>
                 </div>
 
+                <!-- Reviews Section -->
+                <div class="bg-white rounded-2xl shadow-card p-4 mb-8">
+                    <div class="flex justify-between items-center mb-2">
+                        <h2 class="text-xl font-bold">Reviews</h2>
+                        <a href="#" class="text-tiket font-medium text-sm">See All</a>
+                    </div>
+
+                    <div class="mr-2 mb-4">
+                        <div class="text-xl font-bold">4.0</div>
+                        <div class="text-sm text-gray-500">Based on 25 reviews</div>
+                    </div>
+
+                    <!-- Review Cards Carousel -->
+                    <div class="overflow-x-auto pb-4 hide-scrollbar">
+                        <div class="flex space-x-2" style="min-width: max-content;">
+                            <!-- Review Card 1 -->
+                            <div class="flex-shrink-0 w-80 bg-gray-50 rounded-xl p-4">
+                                <div class="flex items-center mb-3">
+                                    <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=200&h=200&q=80"
+                                        alt="Ahmad Fauzi" class="w-10 h-10 rounded-full object-cover mr-3">
+                                    <div>
+                                        <h4 class="font-semibold">Ahmad Fauzi</h4>
+                                        <div class="flex items-center">
+                                            <div class="flex text-xs">
+                                                <i class="fas fa-star text-yellow-400"></i>
+                                                <i class="fas fa-star text-yellow-400"></i>
+                                                <i class="fas fa-star text-yellow-400"></i>
+                                                <i class="fas fa-star text-yellow-400"></i>
+                                                <i class="fas fa-star text-gray-300"></i>
+                                            </div>
+                                            <span class="text-xs text-gray-500 ml-2">3 days ago</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <p class="text-xs text-gray-600 mb-2">"The location is very strategic and the room was clean. Staff were friendly and helpful. Will definitely stay here again!"</p>
+                            </div>
+
+                            <!-- Review Card 2 -->
+                            <div class="flex-shrink-0 w-80 bg-gray-50 rounded-xl p-4">
+                                <div class="flex items-center mb-3">
+                                    <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=200&h=200&q=80"
+                                        alt="Siti Nurhaliza" class="w-10 h-10 rounded-full object-cover mr-3">
+                                    <div>
+                                        <h4 class="font-semibold">Siti Nurhaliza</h4>
+                                        <div class="flex items-center">
+                                            <div class="flex text-xs">
+                                                <i class="fas fa-star text-yellow-400"></i>
+                                                <i class="fas fa-star text-yellow-400"></i>
+                                                <i class="fas fa-star text-yellow-400"></i>
+                                                <i class="fas fa-star text-yellow-400"></i>
+                                                <i class="fas fa-star text-yellow-400"></i>
+                                            </div>
+                                            <span class="text-xs text-gray-500 ml-2">1 week ago</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <p class="text-xs text-gray-600 mb-2">"Great value for money! The room was spacious and had all the amenities we needed. The WiFi was fast and reliable."</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Location Section -->
                 <div class="bg-white rounded-2xl shadow-card p-6 py-8 lg:py-10 mb-8"> <!-- Increased vertical padding on larger screens -->
                     <div class="flex justify-between items-center mb-4">
@@ -372,23 +434,6 @@
                     </div>
                 </div>
 
-                <!-- Leaflet JS -->
-                <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-
-                <script>
-                    // Initialize the map
-                    const map = L.map('map', {
-                        zoomControl: false // This removes the default zoom control buttons
-                    }).setView([-6.2346, 106.8185], 15); // Coordinates for 2510 Urban Living
-
-                    // Add OpenStreetMap tiles
-                    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {}).addTo(map);
-
-                    // Add a marker for the hotel
-                    const hotelMarker = L.marker([-6.2346, 106.8185]).addTo(map);
-                    hotelMarker.bindPopup('2510 Urban Living').openPopup();
-                </script>
-
             </div>
 
             <!-- Right Column: Booking Form -->
@@ -479,6 +524,26 @@
             </div>
         </div>
     </nav>
+
+
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <script>
+        // Initialize the map
+        const map = L.map('map', {
+            zoomControl: false // This removes the default zoom control buttons
+        }).setView([-6.2346, 106.8185], 15); // Coordinates for 2510 Urban Living
+
+        // Add OpenStreetMap tiles
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {}).addTo(map);
+
+        // Add a marker for the hotel
+        const hotelMarker = L.marker([-6.2346, 106.8185]).addTo(map);
+        hotelMarker.bindPopup('2510 Urban Living').openPopup();
+    </script>
+
+
 </body>
 
 </html>
