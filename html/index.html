@@ -43,8 +43,8 @@
         }
 
         .active-tab {
-            border-bottom: 3px solid #0d6efd;
-            color: #0d6efd;
+            border-bottom: 3px solid #fd3d0d;
+            color: rgb(255 107 0 / var(--tw-bg-opacity, 1));
             font-weight: 600;
         }
 
@@ -101,9 +101,9 @@
             <!-- Search Card -->
             <div class="search-card bg-white rounded-2xl p-5 -mb-8 relative z-10">
                 <!-- Tabs -->
-                <div class="flex border-b mb-5">
+                <div class="flex border-b mb-5 text-sm">
                     <button id="train-tab" class="py-3 px-4 active-tab">Train</button>
-                    <button id="hotel-tab" class="py-3 px-4 text-gray-500 smooth-transition hover:text-primary">Hotel</button>
+                    <button id="hotel-tab" class="py-3 px-4 text-gray-500">Hotel</button>
                 </div>
 
                 <!-- Train Search Form -->
@@ -153,9 +153,9 @@
                 <div id="hotel-form" class="space-y-5 hidden">
                     <div>
                         <label class="text-xs text-gray-500 ml-2">City or Property Name</label>
-                        <div class="flex items-center bg-gray-50 rounded-xl px-4 py-3">
+                        <div class="flex items-center bg-gray-50 rounded-xl px-4 py-3 text-sm">
                             <i class="fas fa-hotel text-gray-400 mr-3"></i>
-                            <input type="text" class="w-full bg-transparent focus:outline-none" placeholder="Where do you want to stay?">
+                            <input type="text" class="w-full bg-transparent focus:outline-none text-black" placeholder="Where do you want to stay?">
                         </div>
                     </div>
 
