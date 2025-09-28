@@ -132,7 +132,7 @@
                         <div>
                             <label class="text-xs text-gray-500 ml-2">Date</label>
                             <div class="flex items-center bg-gray-50 rounded-xl px-4 py-3">
-                                <input type="date" class="w-full bg-transparent focus:outline-none text-gray-500 font-semibold text-sm mr-3">
+                                <input type="text" id="date-input" readonly placeholder="Select a date" class="w-full bg-transparent focus:outline-none text-gray-500 font-semibold text-sm mr-3" />
                             </div>
                         </div>
                         <div>
@@ -166,7 +166,204 @@
             </div>
     </section>
 
+    <!-- Modal Backdrop -->
+    <div id="date-picker-backdrop" class="fixed inset-0 bg-black bg-opacity-50 hidden z-40"></div>
 
+    <!-- Date Picker Modal -->
+    <div id="date-picker-modal" class="fixed bottom-0 left-0 right-0 max-w-md mx-auto bg-white rounded-t-xl shadow-2xl transform transition-transform duration-300 translate-y-full z-50">
+        <div class="p-4 border-b border-gray-200">
+            <div class="flex justify-between items-center">
+                <h3 class="text-lg font-semibold text-gray-800">Select Date</h3>
+                <button id="close-modal" class="text-gray-500 hover:text-gray-700">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <div id="calendar-container" class="max-h-96 overflow-y-auto p-4">
+            <!-- Calendar content will be generated here -->
+        </div>
+    </div>
+
+    <script>
+        // Elements
+        const dateInput = document.getElementById('date-input');
+        const modal = document.getElementById('date-picker-modal');
+        const backdrop = document.getElementById('date-picker-backdrop');
+        const closeModalBtn = document.getElementById('close-modal');
+        const calendarContainer = document.getElementById('calendar-container');
+
+        // Selected date state - default to today
+        let selectedDate = new Date();
+        // Set initial input value to today's date
+        dateInput.value = formatDate(new Date());
+
+        // Open modal when input is clicked
+        dateInput.addEventListener('click', openModal);
+
+        // Close modal handlers
+        backdrop.addEventListener('click', closeModal);
+        closeModalBtn.addEventListener('click', closeModal);
+
+        // Format date as YYYY-MM-DD
+        function formatDate(date) {
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        }
+
+        // Format date as Month DD, YYYY
+        function formatDisplayDate(date) {
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            return date.toLocaleDateString('en-US', options);
+        }
+
+        // Generate calendar for 4 months
+        function generateCalendar() {
+            let referenceDate;
+
+            if (selectedDate) {
+                // Use selected date as reference
+                referenceDate = selectedDate;
+            } else {
+                // Use today as reference
+                referenceDate = new Date();
+            }
+
+            const currentMonth = new Date(referenceDate.getFullYear(), referenceDate.getMonth(), 1);
+
+            calendarContainer.innerHTML = '';
+
+            for (let i = 0; i < 4; i++) {
+                const monthDate = new Date(currentMonth.getFullYear(), currentMonth.getMonth() + i, 1);
+                const monthElement = createMonthElement(monthDate, referenceDate);
+                calendarContainer.appendChild(monthElement);
+            }
+        }
+
+        // Create month element with days
+        function createMonthElement(monthDate, referenceDate) {
+            const monthElement = document.createElement('div');
+            monthElement.className = 'mb-6';
+
+            // Month header
+            const monthHeader = document.createElement('div');
+            monthHeader.className = 'text-lg font-semibold text-gray-800 mb-3';
+            monthHeader.textContent = monthDate.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+
+            monthElement.appendChild(monthHeader);
+
+            // Days of week header
+            const daysHeader = document.createElement('div');
+            daysHeader.className = 'grid grid-cols-7 gap-1 mb-2';
+
+            const dayNames = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
+            dayNames.forEach(dayName => {
+                const dayHeader = document.createElement('div');
+                dayHeader.className = 'text-center text-sm font-medium text-gray-500 py-1';
+                dayHeader.textContent = dayName;
+                daysHeader.appendChild(dayHeader);
+            });
+
+            monthElement.appendChild(daysHeader);
+
+            // Calendar grid
+            const calendarGrid = document.createElement('div');
+            calendarGrid.className = 'grid grid-cols-7 gap-1';
+
+            // Get first day of month and day of week it starts on
+            const firstDay = new Date(monthDate.getFullYear(), monthDate.getMonth(), 1).getDay();
+            const daysInMonth = new Date(monthDate.getFullYear(), monthDate.getMonth() + 1, 0).getDate();
+
+            // Add empty cells for days before the first day of the month
+            for (let i = 0; i < firstDay; i++) {
+                const emptyCell = document.createElement('div');
+                emptyCell.className = 'h-10';
+                calendarGrid.appendChild(emptyCell);
+            }
+
+            // Add day cells
+            for (let day = 1; day <= daysInMonth; day++) {
+                const dayDate = new Date(monthDate.getFullYear(), monthDate.getMonth(), day);
+                const dayElement = document.createElement('div');
+
+                // Check if date is today or in the past
+                const isPast = dayDate < new Date(new Date().setHours(0, 0, 0, 0));
+                const isSelected = selectedDate && dayDate.toDateString() === selectedDate.toDateString();
+
+                // Base classes
+                dayElement.className = 'flex items-center justify-center h-10 w-10 rounded-full text-sm font-medium cursor-pointer transition-colors';
+
+                if (isPast) {
+                    // Past date - disabled
+                    dayElement.className += ' text-gray-300 cursor-not-allowed';
+                    dayElement.textContent = day;
+                } else {
+                    // Valid date - clickable
+                    dayElement.className += ' text-gray-700 hover:bg-orange-100';
+
+                    if (isSelected) {
+                        // Selected date
+                        dayElement.className = 'flex items-center justify-center h-10 w-10 rounded-full text-sm font-medium bg-orange-500 text-white';
+                    }
+
+                    dayElement.textContent = day;
+
+                    // Add click event
+                    dayElement.addEventListener('click', () => {
+                        // Remove selected class from previous selection
+                        const previouslySelected = document.querySelector('.bg-orange-500.text-white');
+                        if (previouslySelected) {
+                            previouslySelected.classList.remove('bg-orange-500', 'text-white');
+                            previouslySelected.classList.add('text-gray-700', 'hover:bg-orange-100');
+                        }
+
+                        // Update selected date
+                        selectedDate = dayDate;
+                        dateInput.value = formatDate(dayDate);
+
+                        // Apply selected class to clicked date
+                        dayElement.classList.remove('text-gray-700', 'hover:bg-orange-100');
+                        dayElement.classList.add('bg-orange-500', 'text-white');
+
+                        closeModal();
+
+                        // Optional: Call a callback function with the selected date
+                        if (typeof onDateSelected === 'function') {
+                            onDateSelected(dayDate);
+                        }
+                    });
+                }
+
+                calendarGrid.appendChild(dayElement);
+            }
+
+            monthElement.appendChild(calendarGrid);
+            return monthElement;
+        }
+
+        // Open modal
+        function openModal() {
+            generateCalendar();
+            modal.classList.remove('translate-y-full');
+            backdrop.classList.remove('hidden');
+        }
+
+        // Close modal
+        function closeModal() {
+            modal.classList.add('translate-y-full');
+            backdrop.classList.add('hidden');
+        }
+
+        // Optional callback function for when date is selected
+        function onDateSelected(date) {
+            console.log('Selected date:', formatDate(date));
+            // Add your custom logic here
+        }
+    </script>
 
     <script>
         window.addEventListener('scroll', function () {
