@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EasyTour - Hotels</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#0d6efd',
+                        secondary: '#6c757d',
+                        accent: '#ffc107',
+                        tiket: '#ff6b00',
+                        tiketLight: '#fff0e6'
+                    },
+                    fontFamily: {
+                        poppins: ['Poppins', 'sans-serif']
+                    },
+                    boxShadow: {
+                        'card': '0 4px 12px rgba(0,0,0,0.08)',
+                        'search': '0 6px 20px rgba(0,0,0,0.12)'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+
+<body class="bg-gray-100">
+    <div class="mx-auto bg-white min-h-screen">
+        <!-- Header with Search/Filter -->
+        <div class="sticky top-0 z-50 bg-white border-b border-gray-200 p-4">
+            <div class="space-y-2">
+                <div class="flex items-center justify-between">
+                    <div class="flex-1">
+                        <div class="text-sm font-semibold text-gray-900">Jakarta</div>
+                        <div class="text-xs text-gray-600">26 Sep – 27 Sep • 1 Room, 1 Adult</div>
+                    </div>
+                    <div class="ml-4">
+                        <i class="fas fa-sliders-h text-gray-600"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Promoted Stay Section with Background Image -->
+        <div class="relative p-4 mb-4 w bg-gradient-to-r from-blue-400 to-blue-500 opacity-80">
+
+            <!-- Content Overlay -->
+            <div class="relative z-10">
+                <div class="flex items-center justify-between mb-3">
+                    <span class="text-white text-sm font-semibold">Promoted Stay</span>
+                    <span class="text-white text-sm font-bold">02:45:12</span>
+                </div>
+
+                <!-- Horizontal Scroll for Promoted Hotels (Flying above background) -->
+                <div class="flex space-x-3 overflow-x-auto pb-2 -mx-4 px-4">
+                    <!-- loop promoted here -->
+                    <div class="flex-shrink-0 w-48 bg-white rounded-md shadow-lg border border-gray-200 transform hover:scale-105 transition-transform duration-200">
+                        <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?w=180&h=100&fit=crop" alt="The Langham" class="w-full h-24 object-cover rounded-t-lg">
+                        <div class="p-3">
+                            <div class="text-xs font-semibold truncate mb-1">The Langham</div>
+                            <div class="flex items-start flex-col">
+                                <div class="flex items-center">
+                                    <i class="fas fa-star text-yellow-400 text-xs"></i>
+                                    <span class="text-xs text-gray-600 ml-1">4.9</span>
+                                </div>
+                                <span class="text-xs font-bold text-red-600 mt-3">$155</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Hotel Recommendation -->
+        <div class="px-4 pb-5">
+            <div class="flex space-x-2 mb-4 overflow-x-auto pb-2 hide-scrollbar">
+                <button class="city-badge bg-tiket text-white px-3 py-1 rounded-full text-xs font-medium whitespace-nowrap active" data-city="all">
+                    All Cities
+                </button>
+                <button class="city-badge bg-tiket text-white px-3 py-1 rounded-full text-xs font-medium whitespace-nowrap" data-city="south">
+                    South Jakarta
+                </button>
+                <button class="city-badge bg-tiket text-white px-3 py-1 rounded-full text-xs font-medium whitespace-nowrap" data-city="central">
+                    Central Jakarta
+                </button>
+                <button class="city-badge bg-tiket text-white px-3 py-1 rounded-full text-xs font-medium whitespace-nowrap" data-city="north">
+                    North Jakarta
+                </button>
+            </div>
+            <style>
+                .hide-scrollbar {
+                    -ms-overflow-style: none;
+                    /* IE and Edge */
+                    scrollbar-width: none;
+                    /* Firefox */
+                }
+
+                .hide-scrollbar::-webkit-scrollbar {
+                    /* Chrome, Safari, Opera */
+                    display: none;
+                }
+            </style>
+
+            <div class="grid grid-cols-2 gap-3">
+                <!-- South Jakarta Hotels -->
+                <a href="#" class="block bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden city-card" data-city="south">
+                    <div class="relative">
+                        <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?w=200&h=120&fit=crop" alt="The Langham, Jakarta Kebayoran Baru" class="w-full h-20 object-cover">
+                        <div class="absolute top-1 right-1 bg-yellow-500 text-white px-1 py-0.5 rounded text-xs font-semibold">
+                            Top
+                        </div>
+                    </div>
+                    <div class="p-2">
+                        <h3 class="font-semibold text-gray-900 text-xs line-clamp-2 mb-1">
+                            The Langham
+                        </h3>
+                        <p class="text-xs text-gray-600 mb-1 truncate">
+                            <i class="fas fa-map-marker-alt text-xs mr-1 text-gray-400"></i>
+                            South Jakarta
+                        </p>
+                        <div class="flex items-center mb-1">
+                            <div class="flex items-center bg-yellow-100 px-1 py-0.5 rounded mr-1">
+                                <i class="fas fa-star text-xs text-yellow-400"></i>
+                                <span class="text-xs font-semibold text-gray-800">4.9</span>
+                            </div>
+                        </div>
+                        <div class="space-y-0.5">
+                            <div class="flex items-center">
+                                <span class="text-xs line-through text-gray-400 mr-1">$175</span>
+                                <span class="text-sm font-bold text-red-600">$155</span>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- Central Jakarta Hotels -->
+                <a href="#" class="block bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden city-card" data-city="central">
+                    <div class="relative">
+                        <img src="https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=200&h=120&fit=crop" alt="Grand Sahid Jaya Jakarta" class="w-full h-20 object-cover">
+                    </div>
+                    <div class="p-2">
+                        <h3 class="font-semibold text-gray-900 text-xs line-clamp-2 mb-1">
+                            Grand Sahid
+                        </h3>
+                        <p class="text-xs text-gray-600 mb-1 truncate">
+                            <i class="fas fa-map-marker-alt text-xs mr-1 text-gray-400"></i>
+                            Central Jakarta
+                        </p>
+                        <div class="flex items-center mb-1">
+                            <div class="flex items-center bg-yellow-100 px-1 py-0.5 rounded mr-1">
+                                <i class="fas fa-star text-xs text-yellow-400"></i>
+                                <span class="text-xs font-semibold text-gray-800">4.3</span>
+                            </div>
+                        </div>
+                        <div class="space-y-0.5">
+                            <div class="flex items-center">
+                                <span class="text-xs line-through text-gray-400 mr-1">$72</span>
+                                <span class="text-sm font-bold text-red-600">$42</span>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- North Jakarta Hotels -->
+                <a href="#" class="block bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden city-card" data-city="north">
+                    <div class="relative">
+                        <img src="https://images.unsplash.com/photo-1611892440504-42a792e24d32?w=200&h=120&fit=crop" alt="Pullman Jakarta" class="w-full h-20 object-cover">
+                        <div class="absolute top-1 right-1 bg-yellow-500 text-white px-1 py-0.5 rounded text-xs font-semibold">
+                            Top
+                        </div>
+                    </div>
+                    <div class="p-2">
+                        <h3 class="font-semibold text-gray-900 text-xs line-clamp-2 mb-1">
+                            Pullman
+                        </h3>
+                        <p class="text-xs text-gray-600 mb-1 truncate">
+                            <i class="fas fa-map-marker-alt text-xs mr-1 text-gray-400"></i>
+                            North Jakarta
+                        </p>
+                        <div class="flex items-center mb-1">
+                            <div class="flex items-center bg-yellow-100 px-1 py-0.5 rounded mr-1">
+                                <i class="fas fa-star text-xs text-yellow-400"></i>
+                                <span class="text-xs font-semibold text-gray-800">4.7</span>
+                            </div>
+                        </div>
+                        <div class="space-y-0.5">
+                            <div class="flex items-center">
+                                <span class="text-xs line-through text-gray-400 mr-1">$120</span>
+                                <span class="text-sm font-bold text-red-600">$95</span>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- South Jakarta Hotels -->
+                <a href="#" class="block bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden city-card" data-city="south">
+                    <div class="relative">
+                        <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?w=200&h=120&fit=crop" alt="Hotel 4" class="w-full h-20 object-cover">
+                    </div>
+                    <div class="p-2">
+                        <h3 class="font-semibold text-gray-900 text-xs line-clamp-2 mb-1">
+                            Hotel 4
+                        </h3>
+                        <p class="text-xs text-gray-600 mb-1 truncate">
+                            <i class="fas fa-map-marker-alt text-xs mr-1 text-gray-400"></i>
+                            South Jakarta
+                        </p>
+                        <div class="flex items-center mb-1">
+                            <div class="flex items-center bg-yellow-100 px-1 py-0.5 rounded mr-1">
+                                <i class="fas fa-star text-xs text-yellow-400"></i>
+                                <span class="text-xs font-semibold text-gray-800">4.5</span>
+                            </div>
+                        </div>
+                        <div class="space-y-0.5">
+                            <div class="flex items-center">
+                                <span class="text-xs line-through text-gray-400 mr-1">$85</span>
+                                <span class="text-sm font-bold text-red-600">$65</span>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <script>
+            document.querySelectorAll('.city-badge').forEach(badge => {
+                badge.addEventListener('click', function () {
+                    // Remove active class from all badges
+                    document.querySelectorAll('.city-badge').forEach(b => b.classList.remove('active', 'bg-blue-100', 'text-blue-800'));
+                    // Add active class to clicked badge
+                    this.classList.add('active', 'bg-blue-100', 'text-blue-800');
+
+                    const selectedCity = this.getAttribute('data-city');
+
+                    // Show/hide cards based on selected city
+                    document.querySelectorAll('.city-card').forEach(card => {
+                        if (selectedCity === 'all' || card.getAttribute('data-city') === selectedCity) {
+                            card.style.display = 'block';
+                        } else {
+                            card.style.display = 'none';
+                        }
+                    });
+                });
+            });
+        </script>
+        <style>
+            .destination-card {
+                transition: transform 0.3s ease, box-shadow 0.3s ease;
+            }
+
+            .destination-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            }
+        </style>
+
+
+        <!-- Deals Section -->
+        <section class="py-4 bg-gray-50 pb-10">
+            <div class="container mx-auto px-4">
+                <div class="flex justify-between items-center mb-5">
+                    <h3 class="text-lg font-semibold">Special Deals</h3>
+                    <a href="#" class="text-tiket text-sm font-medium">See All</a>
+                </div>
+
+                <div class="relative">
+                    <div class="overflow-x-auto pb-4 hide-scrollbar">
+                        <div class="flex space-x-4" style="min-width: max-content;">
+                            <!-- Deal Card 1 -->
+                            <div class="rounded-2xl overflow-hidden shadow-card destination-card">
+                                <div class="relative h-48">
+                                    <!-- Background Image -->
+                                    <div class="absolute inset-0 bg-cover bg-center"
+                                        style="background-image: url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=200&q=80');"></div>
+
+                                    <!-- Overlay -->
+                                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+
+                                    <!-- Content -->
+                                    <div class="relative z-10 p-4 mr-10 h-full flex flex-col justify-between">
+                                        <div class="flex justify-between items-start">
+                                            <div>
+                                                <h4 class="text-white font-semibold text-lg">Bali Getaway Package</h4>
+                                                <p class="text-white/90 text-sm">5D4N • Hotel + Flight</p>
+                                            </div>
+                                        </div>
+
+                                        <div class="flex justify-between items-end">
+                                            <div>
+                                                <div class="text-white/80 text-xs">Start from</div>
+                                                <div class="flex items-center">
+                                                    <span class="text-white font-bold text-xl">Rp 2.500.000</span>
+                                                    <span class="text-white/70 text-sm line-through ml-2">Rp 3.200.000</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="rounded-2xl overflow-hidden shadow-card destination-card">
+                                <div class="relative h-48">
+                                    <!-- Background Image -->
+                                    <div class="absolute inset-0 bg-cover bg-center"
+                                        style="background-image: url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=200&q=80');"></div>
+
+                                    <!-- Overlay -->
+                                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+
+                                    <!-- Content -->
+                                    <div class="relative z-10 p-4 mr-10 h-full flex flex-col justify-between">
+                                        <div class="flex justify-between items-start">
+                                            <div>
+                                                <h4 class="text-white font-semibold text-lg">Bali Getaway Package</h4>
+                                                <p class="text-white/90 text-sm">5D4N • Hotel + Flight</p>
+                                            </div>
+                                        </div>
+
+                                        <div class="flex justify-between items-end">
+                                            <div>
+                                                <div class="text-white/80 text-xs">Start from</div>
+                                                <div class="flex items-center">
+                                                    <span class="text-white font-bold text-xl">Rp 2.500.000</span>
+                                                    <span class="text-white/70 text-sm line-through ml-2">Rp 3.200.000</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="rounded-2xl overflow-hidden shadow-card destination-card">
+                                <div class="relative h-48">
+                                    <!-- Background Image -->
+                                    <div class="absolute inset-0 bg-cover bg-center"
+                                        style="background-image: url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=200&q=80');"></div>
+
+                                    <!-- Overlay -->
+                                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+
+                                    <!-- Content -->
+                                    <div class="relative z-10 p-4 mr-10 h-full flex flex-col justify-between">
+                                        <div class="flex justify-between items-start">
+                                            <div>
+                                                <h4 class="text-white font-semibold text-lg">Bali Getaway Package</h4>
+                                                <p class="text-white/90 text-sm">5D4N • Hotel + Flight</p>
+                                            </div>
+                                        </div>
+
+                                        <div class="flex justify-between items-end">
+                                            <div>
+                                                <div class="text-white/80 text-xs">Start from</div>
+                                                <div class="flex items-center">
+                                                    <span class="text-white font-bold text-xl">Rp 2.500.000</span>
+                                                    <span class="text-white/70 text-sm line-through ml-2">Rp 3.200.000</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- Main Hotel List -->
+        <div class="px-4 space-y-4 pb-20">
+            <!-- Hotel Card 1 -->
+            <a href="#" class="block bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+                <div class="relative">
+                    <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?w=400&h=200&fit=crop" alt="The Langham, Jakarta Kebayoran Baru" class="w-full h-40 object-cover">
+                    <div class="absolute top-2 right-2 bg-yellow-500 text-white px-2 py-1 rounded text-xs font-semibold">
+                        Top Hotel
+                    </div>
+                </div>
+                <div class="p-4">
+                    <div class="flex justify-between items-start mb-2">
+                        <div class="flex-1">
+                            <h3 class="font-semibold text-gray-900 line-clamp-2 mb-1">
+                                The Langham, Jakarta Kebayoran Baru
+                            </h3>
+                            <p class="text-sm text-gray-600 mb-2 flex items-center">
+                                <i class="fas fa-map-marker-alt text-xs mr-1 text-gray-400"></i>
+                                South Jakarta
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center mb-3">
+                        <div class="flex items-center bg-yellow-100 px-2 py-1 rounded mr-2">
+                            <i class="fas fa-star text-yellow-400 text-xs mr-1"></i>
+                            <span class="text-xs font-semibold text-gray-800">4.9</span>
+                        </div>
+                        <span class="text-xs text-gray-500">(386 reviews)</span>
+                    </div>
+
+                    <div class="space-y-1">
+                        <div class="flex items-center">
+                            <span class="text-xs text-gray-500 mr-2">Total:</span>
+                            <span class="text-sm line-through text-gray-400 mr-2">$175</span>
+                            <span class="text-lg font-bold text-red-600">$155</span>
+                        </div>
+                        <div class="text-xs text-gray-500">excluding taxes</div>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Hotel Card 2 -->
+            <a href="#" class="block bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+                <div class="relative">
+                    <img src="https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=200&fit=crop" alt="Grand Sahid Jaya Jakarta" class="w-full h-40 object-cover">
+                </div>
+                <div class="p-4">
+                    <div class="flex justify-between items-start mb-2">
+                        <div class="flex-1">
+                            <h3 class="font-semibold text-gray-900 line-clamp-2 mb-1">
+                                Grand Sahid Jaya Jakarta
+                            </h3>
+                            <p class="text-sm text-gray-600 mb-2 flex items-center">
+                                <i class="fas fa-map-marker-alt text-xs mr-1 text-gray-400"></i>
+                                Central Jakarta
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center mb-3">
+                        <div class="flex items-center bg-yellow-100 px-2 py-1 rounded mr-2">
+                            <i class="fas fa-star text-yellow-400 text-xs mr-1"></i>
+                            <span class="text-xs font-semibold text-gray-800">4.3</span>
+                        </div>
+                        <span class="text-xs text-gray-500">(620 reviews)</span>
+                    </div>
+
+                    <div class="space-y-1">
+                        <div class="flex items-center">
+                            <span class="text-xs text-gray-500 mr-2">Total:</span>
+                            <span class="text-sm line-through text-gray-400 mr-2">$72</span>
+                            <span class="text-lg font-bold text-red-600">$42</span>
+                        </div>
+                        <div class="text-xs text-gray-500">excluding taxes</div>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Hotel Card 3 -->
+            <a href="#" class="block bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+                <div class="relative">
+                    <img src="https://images.unsplash.com/photo-1611892440504-42a792e24d32?w=400&h=200&fit=crop" alt="Pullman Jakarta" class="w-full h-40 object-cover">
+                    <div class="absolute top-2 right-2 bg-yellow-500 text-white px-2 py-1 rounded text-xs font-semibold">
+                        Top Hotel
+                    </div>
+                </div>
+                <div class="p-4">
+                    <div class="flex justify-between items-start mb-2">
+                        <div class="flex-1">
+                            <h3 class="font-semibold text-gray-900 line-clamp-2 mb-1">
+                                Pullman Jakarta
+                            </h3>
+                            <p class="text-sm text-gray-600 mb-2 flex items-center">
+                                <i class="fas fa-map-marker-alt text-xs mr-1 text-gray-400"></i>
+                                Central Jakarta
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center mb-3">
+                        <div class="flex items-center bg-yellow-100 px-2 py-1 rounded mr-2">
+                            <i class="fas fa-star text-yellow-400 text-xs mr-1"></i>
+                            <span class="text-xs font-semibold text-gray-800">4.7</span>
+                        </div>
+                        <span class="text-xs text-gray-500">(445 reviews)</span>
+                    </div>
+
+                    <div class="space-y-1">
+                        <div class="flex items-center">
+                            <span class="text-xs text-gray-500 mr-2">Total:</span>
+                            <span class="text-sm line-through text-gray-400 mr-2">$120</span>
+                            <span class="text-lg font-bold text-red-600">$95</span>
+                        </div>
+                        <div class="text-xs text-gray-500">excluding taxes</div>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+
+    </div>
+
+    <script>
+        // Simple countdown timer for promo
+        function updateCountdown() {
+            const hours = Math.floor(Math.random() * 3);
+            const minutes = Math.floor(Math.random() * 60);
+            const seconds = Math.floor(Math.random() * 60);
+            document.querySelector('.text-sm.font-bold').textContent =
+                `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+    </script>
+</body>
+
+</html>
