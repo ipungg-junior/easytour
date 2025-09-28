@@ -223,29 +223,20 @@
 
         // Generate calendar for 4 months
         function generateCalendar() {
-            let referenceDate;
-
-            if (selectedDate) {
-                // Use selected date as reference
-                referenceDate = selectedDate;
-            } else {
-                // Use today as reference
-                referenceDate = new Date();
-            }
-
-            const currentMonth = new Date(referenceDate.getFullYear(), referenceDate.getMonth(), 1);
+            const today = new Date();
+            const currentMonth = new Date(today.getFullYear(), today.getMonth(), 1);
 
             calendarContainer.innerHTML = '';
 
             for (let i = 0; i < 4; i++) {
                 const monthDate = new Date(currentMonth.getFullYear(), currentMonth.getMonth() + i, 1);
-                const monthElement = createMonthElement(monthDate, referenceDate);
+                const monthElement = createMonthElement(monthDate, today);
                 calendarContainer.appendChild(monthElement);
             }
         }
 
         // Create month element with days
-        function createMonthElement(monthDate, referenceDate) {
+        function createMonthElement(monthDate, today) {
             const monthElement = document.createElement('div');
             monthElement.className = 'mb-6';
 
