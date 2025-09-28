@@ -132,7 +132,7 @@
                         <div>
                             <label class="text-xs text-gray-500 ml-2">Date</label>
                             <div class="flex items-center bg-gray-50 rounded-xl px-4 py-3">
-                                <input type="text" id="date-input" readonly placeholder="Select a date" class="w-full bg-transparent focus:outline-none text-gray-500 font-semibold text-sm mr-3" />
+                                <input type="text" id="date-input" readonly placeholder="Select a date" class="w-full bg-transparent focus:outline-none text-gray-600 font-semibold text-xs mr-3" />
                             </div>
                         </div>
                         <div>
@@ -198,7 +198,7 @@
         // Selected date state - default to today
         let selectedDate = new Date();
         // Set initial input value to today's date
-        dateInput.value = formatDate(new Date());
+        dateInput.value = formatDisplayDate(new Date());
 
         // Open modal when input is clicked
         dateInput.addEventListener('click', openModal);
@@ -215,10 +215,10 @@
             return `${year}-${month}-${day}`;
         }
 
-        // Format date as Month DD, YYYY
+        // Format date as "Wed, 28 September 2025"
         function formatDisplayDate(date) {
-            const options = { year: 'numeric', month: 'long', day: 'numeric' };
-            return date.toLocaleDateString('en-US', options);
+            const options = { weekday: 'short', day: 'numeric', month: 'long', year: 'numeric' };
+            return date.toLocaleDateString('id-US', options);
         }
 
         // Generate calendar for 4 months
@@ -251,7 +251,7 @@
             const daysHeader = document.createElement('div');
             daysHeader.className = 'grid grid-cols-7 gap-1 mb-2';
 
-            const dayNames = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
+            const dayNames = ['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'];
             dayNames.forEach(dayName => {
                 const dayHeader = document.createElement('div');
                 dayHeader.className = 'text-center text-sm font-medium text-gray-500 py-1';
@@ -314,7 +314,7 @@
 
                         // Update selected date
                         selectedDate = dayDate;
-                        dateInput.value = formatDate(dayDate);
+                        dateInput.value = formatDisplayDate(dayDate);
 
                         // Apply selected class to clicked date
                         dayElement.classList.remove('text-gray-700', 'hover:bg-orange-100');
